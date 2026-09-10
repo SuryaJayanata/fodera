@@ -11,10 +11,17 @@
 [![Vite](https://img.shields.io/badge/Vite-8.2.2-purple.svg)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-v4.3.3-38bdf8.svg)](https://tailwindcss.com/)
 [![Phosphor Icons](https://img.shields.io/badge/Icons-Phosphor_v2.1-orange.svg)](https://phosphoricons.com/)
+[![Project Status](https://img.shields.io/badge/Status-Work_in_Progress_(WIP)-amber.svg)]()
+[![Pilar 1 Progress](https://img.shields.io/badge/Pilar_1_(Operasi)-~80%25_Complete-orange.svg)]()
 [![Build Status](https://img.shields.io/badge/Build-Passing-emerald.svg)]()
 
 </div>
 
+---
+
+> [!IMPORTANT]
+> ### 🚧 Catatan Status Proyek: Work in Progress (WIP)
+> Repositori ini sedang berada dalam tahap pengembangan aktif (*Active Development*):
 ---
 
 ## 📌 Ringkasan Proyek
