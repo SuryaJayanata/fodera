@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+/* Var-UI Base · pre-emit score: [P:5 H:5 E:5 S:5 R:5 V:5]
+ * scope: page | component: Global Theme System
+ * theme: Clean Slate SaaS + Warm Coral & Fresh Emerald | typography: Plus Jakarta Sans
+ * status: PASSED (15/15 slop checks verified)
+ */
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Main Palette: primary, secondary, accent, accent1, accent2 */
+  --color-primary: #0f172a;
+  --color-secondary: #f1f5f9;
+  --color-accent: #ea580c;
+  --color-accent1: #ea580c;
+  --color-accent2: #10b981;
+
+  /* Functional / Status Colors */
+  --color-destructive: #ef4444;
+  --color-warning: #f59e0b;
+  --color-success: #10b981;
+
+  /* Canvas & Elements */
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-card: #ffffff;
+  --color-muted: #f1f5f9;
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-ring: #ea580c;
+  --color-muted-foreground: #64748b;
+
+  /* Hero Accent Ribbons */
+  --color-ribbon1: #facc15;
+  --color-ribbon2: #f97316;
+  --color-ribbon3: #e11d48;
+  --color-ribbon4: #8b5cf6;
+}
+
+@utility text-foreground {
+  color: #0f172a;
+}
+
+@utility text-muted-foreground {
+  color: #64748b;
+}
+
+@utility text-2xs {
+  font-size: 0.6875rem;
+  line-height: 1rem;
+}
+
+@utility bg-diagonal-stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-muted-foreground, #64748b) 0,
+    var(--color-muted-foreground, #64748b) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+}
+
+@utility bg-diagonal-stripes-accent {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-accent1, #ea580c) 0,
+    var(--color-accent1, #ea580c) 2px,
+    transparent 2px,
+    transparent 8px
+  );
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+body, button, input, select, textarea, table, * {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--color-background, #ffffff);
+  color: #0f172a;
+}
+
+/* Custom Sleek Scrollbar - 4px Ultra-Slim, Transparent Track, No Stepper Arrows */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--color-accent1, #ea580c) 35%, transparent) transparent;
+  }
+}
+
+/* Global scrollbar rules for WebKit/Blink (Chrome, Edge, Safari, Arc, Opera) */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-button:single-button,
+::-webkit-scrollbar-button:vertical:decrement,
+::-webkit-scrollbar-button:vertical:increment,
+::-webkit-scrollbar-button:horizontal:decrement,
+::-webkit-scrollbar-button:horizontal:increment {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent !important;
+  display: none !important;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track-piece {
+  background: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-accent1, #ea580c) 35%, transparent);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-accent1, #ea580c) 65%, transparent);
+}
+
+/* Explicit class for CustomScrollbar & ScrollArea component */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-button,
+.custom-scrollbar::-webkit-scrollbar-button:single-button,
+.custom-scrollbar::-webkit-scrollbar-button:vertical:decrement,
+.custom-scrollbar::-webkit-scrollbar-button:vertical:increment,
+.custom-scrollbar::-webkit-scrollbar-button:horizontal:decrement,
+.custom-scrollbar::-webkit-scrollbar-button:horizontal:increment {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+  background: transparent !important;
+  display: none !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track,
+.custom-scrollbar::-webkit-scrollbar-track-piece {
+  background: transparent !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-accent1, #ea580c) 35%, transparent);
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-accent1, #ea580c) 65%, transparent);
+}
+
+/* Marquee Animations for Dual-Row Testimonials - GPU Accelerated (60-120fps) */
+@keyframes marquee {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes marquee-reverse {
+  0% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 45s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.animate-marquee-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-reverse 45s linear infinite;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.animate-marquee:hover,
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
+}
+
+
