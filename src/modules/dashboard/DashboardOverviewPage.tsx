@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   TrendUp,
   ShoppingCart,
@@ -8,7 +8,10 @@ import {
   ArrowRight,
   ArrowUpRight,
   CaretRight,
+  CaretDown,
+  CaretUp,
   CheckCircle,
+  X,
 } from '@phosphor-icons/react'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
 import { MetricCard } from '@/components/ui/metric-card'
@@ -16,6 +19,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Alert } from '@/components/ui/alert'
 import { StripedBarChart } from '@/components/ui/striped-bar-chart'
+import { SmartSearchHero } from './SmartSearchHero'
+import { cn } from '@/lib/utils'
 
 /* Var-UI Base · pre-emit score: [P:5 H:5 E:5 S:5 R:5 V:5]
  * scope: page | component: DashboardOverviewPage
@@ -27,12 +32,14 @@ interface DashboardOverviewProps {
   currentOutlet: string
   currentPeriod: string
   onNavigate: (module: string, subPage?: string) => void
+  onOutletChange?: (outlet: string) => void
 }
 
 export function DashboardOverviewPage({
   currentOutlet,
   currentPeriod,
   onNavigate,
+  onOutletChange,
 }: DashboardOverviewProps) {
 
   const topProducts = [
@@ -49,168 +56,364 @@ export function DashboardOverviewPage({
       description: 'Biji Kopi Arabica tersisa 18 kg (Batas min: 20 kg). Gula Aren sisa 6 kg (Batas min: 10 kg).',
       actionLabel: 'Restock Sekarang',
       actionModule: 'inventory',
+      actionSubPage: 'stock',
       severity: 'warning' as const,
     },
     {
       id: 2,
-      title: 'Outlet Surabaya Mengalami Penurunan Omzet 12%',
-      description: 'Penjualan minggu ini Rp15.8M dibandingkan target Rp18.0M akibat keterlambatan pasokan sirup.',
-      actionLabel: 'Cek Performa Outlet',
-      actionModule: 'outlets',
-      severity: 'destructive' as const,
+      title: 'Pesanan Masuk Jam Sibuk (#ORD-9284)',
+      description: 'Pesanan baru senilai Rp118.000 masuk dari Kasir Cabang Malang. Antrean butuh konfirmasi barista.',
+      actionLabel: 'Antrean Kasir',
+      actionModule: 'sales',
+      actionSubPage: 'orders',
+      severity: 'warning' as const,
     },
     {
       id: 3,
+      title: 'Outlet Surabaya Mengalami Penurunan Omzet 12%',
+      description: 'Penjualan minggu ini Rp15.8M dibandingkan target Rp18.0M akibat keterlambatan pasokan sirup.',
+      actionLabel: 'Cek Performa',
+      actionModule: 'outlets',
+      actionSubPage: 'comparison',
+      severity: 'destructive' as const,
+    },
+    {
+      id: 4,
+      title: 'Jadwal Shift Barista Siang Aktif (Cabang Surabaya)',
+      description: '3 barista aktif telah absen masuk. Operasional stasiun espresso shift siang berjalan lancar.',
+      actionLabel: 'Lihat Shift',
+      actionModule: 'team',
+      actionSubPage: 'shifts',
+      severity: 'success' as const,
+    },
+    {
+      id: 5,
       title: 'Pencatatan Waste Susu Segar Naik 18%',
       description: '3.5 Liter susu expired (kerugian Rp119.000) terdeteksi di outlet Malang.',
       actionLabel: 'Investigasi Waste',
       actionModule: 'inventory',
+      actionSubPage: 'waste',
       severity: 'accent1' as const,
     },
   ]
 
+  const [isAlertsHidden, setIsAlertsHidden] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('fodera_alerts_hidden') === 'true'
+    } catch {
+      return false
+    }
+  })
+
+  const [dismissedAlertIds, setDismissedAlertIds] = useState<number[]>(() => {
+    try {
+      const stored = localStorage.getItem('fodera_dismissed_alert_ids')
+      return stored ? JSON.parse(stored) : []
+    } catch {
+      return []
+    }
+  })
+
+  const toggleHideAlerts = (hidden: boolean) => {
+    setIsAlertsHidden(hidden)
+    try {
+      localStorage.setItem('fodera_alerts_hidden', String(hidden))
+    } catch {}
+  }
+
+  const handleDismissAlert = (id: number) => {
+    const updated = [...dismissedAlertIds, id]
+    setDismissedAlertIds(updated)
+    try {
+      localStorage.setItem('fodera_dismissed_alert_ids', JSON.stringify(updated))
+    } catch {}
+  }
+
+  const handleResetAlerts = () => {
+    setDismissedAlertIds([])
+    try {
+      localStorage.removeItem('fodera_dismissed_alert_ids')
+    } catch {}
+  }
+
+  const activeAlerts = operationalAlerts.filter(
+    (alert) => !dismissedAlertIds.includes(alert.id)
+  )
+
   return (
     <div className="space-y-6">
-      {/* Operational North Star Header Banner */}
-      <div className="rounded-xl border border-border bg-card p-5 shadow-xs">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-lg font-bold text-foreground tracking-tight">
-              Operational North Star
-            </h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Empat pertanyaan inti yang harus terjawab dalam beberapa detik setiap Anda membuka FODERA
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold text-muted-foreground">Status Operasional:</span>
-            <Badge variant="accent2" className="gap-1">
-              <CheckCircle className="h-3.5 w-3.5" weight="fill" />
-              <span>Semua Outlet Beroperasi</span>
-            </Badge>
-          </div>
-        </div>
+      {/* ─── Smart Search Hero Section (Inspired by Reference UI) ─── */}
+      <SmartSearchHero
+        onNavigate={onNavigate}
+        onOutletChange={onOutletChange}
+      />
 
-        {/* 4 Answers Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4 pt-4 border-t border-border">
-          <div className="p-3 rounded-lg bg-secondary/50 border border-border/50">
-            <div className="text-xs font-semibold text-muted-foreground">1. How is business doing?</div>
-            <div className="text-sm font-bold text-foreground mt-1">Rp48.250.000</div>
-            <div className="text-xs text-accent2 font-semibold flex items-center gap-0.5 mt-0.5">
-              <ArrowUpRight className="h-3.5 w-3.5" weight="bold" />
-              <span>+12.4% vs periode lalu</span>
-            </div>
+      {/* 2-Column Cockpit Layout: Left 66% (Analytics & Charts) vs Right 33% (Operational Stream) */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        {/* ─── LEFT COLUMN (2 Cols / 66%): Analytics, KPIs, & Striped Bar Chart ─── */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* KPI Cards Grid (Compact 4-column row directly visible above the fold) */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+            <MetricCard
+              title="TOTAL REVENUE"
+              value="Rp48.25M"
+              change="+12.4%"
+              trend="up"
+              subtitle="7 Hari Terakhir"
+              icon={CurrencyDollar}
+              sparkline={[60, 45, 80, 100, 85]}
+            />
+            <MetricCard
+              title="TOTAL ORDERS"
+              value="1,284"
+              change="+8.2%"
+              trend="up"
+              subtitle="183 pesanan / hari"
+              icon={ShoppingCart}
+              sparkline={[45, 65, 55, 90, 80]}
+            />
+            <MetricCard
+              title="AVG ORDER VALUE"
+              value="Rp37.5k"
+              change="+3.8%"
+              trend="up"
+              subtitle="Basket size per struk"
+              icon={TrendUp}
+              sparkline={[70, 50, 75, 95, 85]}
+            />
+            <MetricCard
+              title="ACTIVE PRODUCTS"
+              value="86"
+              change="3 Underperform"
+              trend="neutral"
+              subtitle="9 kategori menu aktif"
+              icon={Coffee}
+              sparkline={[85, 80, 90, 85, 90]}
+            />
           </div>
 
-          <div className="p-3 rounded-lg bg-secondary/50 border border-border/50">
-            <div className="text-xs font-semibold text-muted-foreground">2. What drives the business?</div>
-            <div className="text-sm font-bold text-foreground mt-1">Spanish Latte</div>
-            <div className="text-xs text-muted-foreground mt-0.5">284 cups terjual (Rp9.2M)</div>
-          </div>
+          {/* Primary Visual Chart: Striped Bar Chart (Visible immediately without scrolling) */}
+          <Card>
+            <CardContent className="pt-6">
+              <StripedBarChart
+                title="Activity Penjualan Mingguan"
+                statLabel="Worked this week · Omzet 7 Hari Terakhir"
+                statValue="186 Tx (Rp48.25M)"
+                changeLabel="+12.4% vs minggu lalu"
+                trend="up"
+                showCategoryBreakdown={true}
+                onViewDetails={() => onNavigate('dashboard', 'analytics')}
+              />
+            </CardContent>
+          </Card>
 
-          <div className="p-3 rounded-lg bg-secondary/50 border border-border/50">
-            <div className="text-xs font-semibold text-muted-foreground">3. What needs attention?</div>
-            <div className="text-sm font-bold text-destructive mt-1">2 Bahan Menipis</div>
-            <div className="text-xs text-muted-foreground mt-0.5">Biji Kopi & Gula Aren</div>
-          </div>
-
-          <div className="p-3 rounded-lg bg-secondary/50 border border-border/50">
-            <div className="text-xs font-semibold text-muted-foreground">4. What should I do next?</div>
-            <div className="text-sm font-bold text-accent1 mt-1">Restock Coffee Beans</div>
-            <div className="text-xs text-muted-foreground mt-0.5">Supplier: CV Mitra Nusantara</div>
-          </div>
-        </div>
-      </div>
-
-      {/* KPI Cards Grid (Matches Reference Media 1 & 2) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <MetricCard
-          title="TOTAL REVENUE"
-          value="Rp48.250.000"
-          change="+12.4%"
-          trend="up"
-          subtitle="Dibanding periode sebelumnya"
-          icon={CurrencyDollar}
-        />
-        <MetricCard
-          title="TOTAL ORDERS"
-          value="1,284"
-          change="+8.2%"
-          trend="up"
-          subtitle="Rata-rata 183 pesanan / hari"
-          icon={ShoppingCart}
-        />
-        <MetricCard
-          title="AVERAGE ORDER VALUE (AOV)"
-          value="Rp37.578"
-          change="+3.8%"
-          trend="up"
-          subtitle="Basket size per struk"
-          icon={TrendUp}
-        />
-        <MetricCard
-          title="ACTIVE PRODUCTS"
-          value="86"
-          change="3 Underperform"
-          trend="neutral"
-          subtitle="Dari 9 kategori menu aktif"
-          icon={Coffee}
-        />
-      </div>
-
-      {/* Operational Alerts Box ("Don't just show data. Surface what matters.") */}
-      <Card className="border-border">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <WarningCircle className="h-4 w-4 text-accent1" weight="fill" />
-              <CardTitle>Operational Alerts</CardTitle>
-            </div>
-            <span className="text-xs text-muted-foreground">Surface what matters · 3 isu aktif</span>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {operationalAlerts.map((alert) => (
-            <Alert
-              key={alert.id}
-              variant={alert.severity}
-              title={alert.title}
-              action={
+          {/* Top Products Table (Produk Penggerak Bisnis) */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Produk Penggerak Bisnis (Top Drivers)</CardTitle>
+                  <CardDescription>Menu terlaris yang menghasilkan volume dan pendapatan terbesar</CardDescription>
+                </div>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => onNavigate(alert.actionModule)}
-                  className="h-7 text-xs gap-1 font-medium cursor-pointer"
+                  onClick={() => onNavigate('products')}
+                  className="text-xs cursor-pointer"
                 >
-                  <span>{alert.actionLabel}</span>
-                  <ArrowRight className="h-3 w-3" />
+                  Lihat Semua
                 </Button>
-              }
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="relative overflow-x-auto">
+                <table className="w-full text-xs text-left">
+                  <thead className="border-b border-border bg-secondary/40 text-muted-foreground font-semibold">
+                    <tr>
+                      <th className="py-2.5 px-3">Nama Produk</th>
+                      <th className="py-2.5 px-3">Kategori</th>
+                      <th className="py-2.5 px-3 text-right">Qty</th>
+                      <th className="py-2.5 px-3 text-right">Revenue</th>
+                      <th className="py-2.5 px-3 text-right">Tren</th>
+                      <th className="py-2.5 px-3 text-center">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {topProducts.map((p, i) => (
+                      <tr key={i} className="hover:bg-secondary/40 transition-colors">
+                        <td className="py-3 px-3 font-bold text-foreground">{p.name}</td>
+                        <td className="py-3 px-3 text-muted-foreground">{p.category}</td>
+                        <td className="py-3 px-3 text-right font-medium">{p.orders}</td>
+                        <td className="py-3 px-3 text-right font-bold text-foreground">{p.revenue}</td>
+                        <td className="py-3 px-3 text-right font-semibold text-accent2">{p.trend}</td>
+                        <td className="py-3 px-3 text-center">
+                          <Badge variant="accent1">Top Seller</Badge>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* ─── RIGHT COLUMN (1 Col / 33%): Operational Stream, Alerts & North Star ─── */}
+        <div className="lg:col-span-1 space-y-6">
+          {/* Operational Alerts Box (Compact right-side widget with dropdown toggle) */}
+          <Card className="border-border transition-all">
+            <CardHeader
+              onClick={() => toggleHideAlerts(!isAlertsHidden)}
+              className={cn(
+                'flex flex-row items-center justify-between gap-2 p-4 cursor-pointer select-none transition-colors hover:bg-secondary/40 rounded-t-2xl',
+                isAlertsHidden && 'rounded-2xl'
+              )}
             >
-              {alert.description}
-            </Alert>
-          ))}
-        </CardContent>
-      </Card>
+              <div className="flex items-center gap-2">
+                <WarningCircle className="h-4 w-4 text-accent1" weight="fill" />
+                <CardTitle>Notifikasi & Operational Alerts</CardTitle>
+                <Badge variant="secondary" className="text-2xs font-semibold ml-1">
+                  {activeAlerts.length}
+                </Badge>
+              </div>
 
-      {/* Charts & Breakdowns (2 Columns: Sales Trend & Top Products + Multi-Outlet) */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Sales Trend & Volume (Left 2 cols, authentic striped line miring style) */}
-        <Card className="lg:col-span-2">
-          <CardContent className="pt-6">
-            <StripedBarChart
-              title="Activity"
-              statLabel="Worked this week · Omzet 7 Hari Terakhir"
-              statValue="186 Tx (Rp48.25M)"
-              changeLabel="+12.4% vs minggu lalu"
-              trend="up"
-              showCategoryBreakdown={true}
-            />
-          </CardContent>
-        </Card>
+              <div className="flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                {!isAlertsHidden && dismissedAlertIds.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleResetAlerts}
+                    className="text-xs text-muted-foreground hover:text-foreground hover:underline cursor-pointer transition-colors mr-1"
+                  >
+                    Reset ({dismissedAlertIds.length})
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => toggleHideAlerts(!isAlertsHidden)}
+                  className="h-8 w-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors cursor-pointer border border-transparent hover:border-border"
+                  title={isAlertsHidden ? 'Tampilkan Alerts' : 'Sembunyikan Alerts'}
+                  aria-label={isAlertsHidden ? 'Tampilkan Alerts' : 'Sembunyikan Alerts'}
+                >
+                  <CaretDown
+                    className={cn(
+                      'h-4 w-4 transition-transform duration-200',
+                      !isAlertsHidden && 'rotate-180'
+                    )}
+                    weight="bold"
+                  />
+                </button>
+              </div>
+            </CardHeader>
 
-        {/* Right Side: Multi-Outlet Snapshot & Quick Nav */}
-        <div className="space-y-6">
+            {!isAlertsHidden && (
+              <CardContent className="space-y-3 pt-0 pb-4 px-4">
+                {activeAlerts.length === 0 ? (
+                  <div className="py-6 text-center text-xs text-muted-foreground">
+                    <CheckCircle className="h-6 w-6 text-accent2 mx-auto mb-2" weight="fill" />
+                    <p className="font-semibold text-foreground">Tidak ada alert aktif</p>
+                    <p className="text-muted-foreground mt-0.5">
+                      Semua peringatan telah ditangani.
+                    </p>
+                    {dismissedAlertIds.length > 0 && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleResetAlerts}
+                        className="mt-3 h-7 text-xs text-accent1 cursor-pointer font-medium"
+                      >
+                        Pulihkan Semua
+                      </Button>
+                    )}
+                  </div>
+                ) : (
+                  activeAlerts.map((alert) => (
+                    <Alert
+                      key={alert.id}
+                      variant={alert.severity}
+                      title={alert.title}
+                      action={
+                        <div className="flex items-center gap-1.5">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => onNavigate(alert.actionModule, alert.actionSubPage)}
+                            className="h-7 text-xs gap-1 font-medium cursor-pointer"
+                          >
+                            <span>{alert.actionLabel}</span>
+                            <ArrowRight className="h-3 w-3" />
+                          </Button>
+                          <button
+                            type="button"
+                            onClick={() => handleDismissAlert(alert.id)}
+                            className="h-7 w-7 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors cursor-pointer"
+                            title="Abaikan alert ini"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                      }
+                    >
+                      {alert.description}
+                    </Alert>
+                  ))
+                )}
+              </CardContent>
+            )}
+          </Card>
+
+          {/* Operational North Star (Cockpit Briefing Card) */}
+          <Card>
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-accent2" weight="fill" />
+                  <CardTitle>Operational North Star</CardTitle>
+                </div>
+                <Badge variant="accent2" className="text-2xs font-semibold">
+                  Semua Outlet Aktif
+                </Badge>
+              </div>
+              <CardDescription>4 Pertanyaan inti operasional FODERA</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2.5">
+              <div className="p-3 rounded-lg bg-secondary/50 border border-border/50">
+                <div className="text-xs text-muted-foreground font-medium">1. How is business doing?</div>
+                <div className="text-sm font-bold text-foreground mt-0.5 flex items-center justify-between">
+                  <span>Rp48.250.000</span>
+                  <span className="text-2xs font-bold text-accent2 flex items-center gap-0.5">
+                    <ArrowUpRight className="h-3 w-3" weight="bold" />
+                    +12.4%
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-secondary/50 border border-border/50">
+                <div className="text-xs text-muted-foreground font-medium">2. What drives the business?</div>
+                <div className="text-sm font-bold text-foreground mt-0.5 flex items-center justify-between">
+                  <span>Spanish Latte</span>
+                  <span className="text-2xs text-muted-foreground font-medium">284 cups (Rp9.2M)</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-secondary/50 border border-border/50">
+                <div className="text-xs text-muted-foreground font-medium">3. What needs attention?</div>
+                <div className="text-sm font-bold text-destructive mt-0.5 flex items-center justify-between">
+                  <span>2 Bahan Menipis</span>
+                  <span className="text-2xs text-muted-foreground font-medium">Kopi & Gula Aren</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-lg bg-secondary/50 border border-border/50">
+                <div className="text-xs text-muted-foreground font-medium">4. What should I do next?</div>
+                <div className="text-sm font-bold text-accent1 mt-0.5 flex items-center justify-between">
+                  <span>Restock Arabica</span>
+                  <span className="text-2xs text-muted-foreground font-medium">CV Mitra Nusantara</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Performa Antar Outlet */}
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
@@ -226,7 +429,7 @@ export function DashboardOverviewPage({
               </div>
               <CardDescription>Komparasi kontribusi omzet cabang</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-2.5">
               <div className="p-3 rounded-lg border border-border bg-card flex items-center justify-between">
                 <div>
                   <div className="text-xs font-bold text-foreground">Malang (Main Outlet)</div>
@@ -266,7 +469,7 @@ export function DashboardOverviewPage({
           <Card>
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle>Status Bahan Baku</CardTitle>
+                <CardTitle>Status Bahan Baku Kritis</CardTitle>
                 <button
                   type="button"
                   onClick={() => onNavigate('inventory')}
@@ -298,56 +501,6 @@ export function DashboardOverviewPage({
           </Card>
         </div>
       </div>
-
-      {/* Top Products Table */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Produk Penggerak Bisnis (Top Drivers)</CardTitle>
-              <CardDescription>Menu terlaris yang menghasilkan volume dan pendapatan terbesar</CardDescription>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onNavigate('products')}
-              className="text-xs"
-            >
-              Lihat Semua Produk
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="relative overflow-x-auto">
-            <table className="w-full text-xs text-left">
-              <thead className="border-b border-border bg-secondary/40 text-muted-foreground font-semibold">
-                <tr>
-                  <th className="py-2.5 px-3">Nama Produk</th>
-                  <th className="py-2.5 px-3">Kategori</th>
-                  <th className="py-2.5 px-3 text-right">Pesanan (Qty)</th>
-                  <th className="py-2.5 px-3 text-right">Total Revenue</th>
-                  <th className="py-2.5 px-3 text-right">Pertumbuhan</th>
-                  <th className="py-2.5 px-3 text-center">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {topProducts.map((p, i) => (
-                  <tr key={i} className="hover:bg-secondary/40 transition-colors">
-                    <td className="py-3 px-3 font-bold text-foreground">{p.name}</td>
-                    <td className="py-3 px-3 text-muted-foreground">{p.category}</td>
-                    <td className="py-3 px-3 text-right font-medium">{p.orders}</td>
-                    <td className="py-3 px-3 text-right font-bold text-foreground">{p.revenue}</td>
-                    <td className="py-3 px-3 text-right font-semibold text-accent2">{p.trend}</td>
-                    <td className="py-3 px-3 text-center">
-                      <Badge variant="accent1">Top Seller</Badge>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   )
 }

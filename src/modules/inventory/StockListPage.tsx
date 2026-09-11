@@ -212,7 +212,7 @@ export function StockListPage() {
 
       {/* Inventory Health Metric Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-4 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Kondisi Aman (Normal)</span>
             <ShieldCheck className="h-4 w-4 text-accent2" weight="duotone" />
@@ -221,7 +221,7 @@ export function StockListPage() {
           <p className="text-2xs text-muted-foreground mt-0.5">Stok berada di atas ambang safety minimum</p>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-4 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Low Stock (Reorder Alert)</span>
             <Warning className="h-4 w-4 text-warning" weight="duotone" />
@@ -230,7 +230,7 @@ export function StockListPage() {
           <p className="text-2xs text-warning font-semibold mt-0.5">Mendekati safety stock, segera buat PO supplier</p>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-4 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Critical Level (Habis)</span>
             <WarningCircle className="h-4 w-4 text-destructive" weight="duotone" />

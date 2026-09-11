@@ -113,7 +113,7 @@ export function CategoriesPage() {
 
       {/* Summary KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-4 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Total Kategori Aktif</span>
             <FolderSimple className="h-4 w-4 text-accent1" weight="duotone" />
@@ -122,7 +122,7 @@ export function CategoriesPage() {
           <p className="text-2xs text-muted-foreground mt-0.5">Mencakup 74 menu aktif di seluruh outlet</p>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-4 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Penyumbang Omzet Utama</span>
             <Coffee className="h-4 w-4 text-accent2" weight="duotone" />
@@ -131,7 +131,7 @@ export function CategoriesPage() {
           <p className="text-2xs text-accent2 font-semibold mt-0.5">52% dari seluruh perputaran kas</p>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-4 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Rata-rata Margin Menu</span>
             <TrendUp className="h-4 w-4 text-accent1" weight="bold" />

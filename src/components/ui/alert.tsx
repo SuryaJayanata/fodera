@@ -29,7 +29,7 @@ export function Alert({
   const variantStyles = {
     default: 'border-border bg-secondary/60 text-foreground',
     destructive: 'border-destructive/30 bg-destructive/5 text-destructive',
-    warning: 'border-warning/30 bg-warning/5 text-secondary',
+    warning: 'border-warning/30 bg-warning/5 text-warning',
     success: 'border-success/30 bg-success/5 text-foreground',
     accent1: 'border-accent1/30 bg-accent1/5 text-accent1',
   }

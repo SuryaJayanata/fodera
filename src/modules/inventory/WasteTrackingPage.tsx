@@ -195,7 +195,7 @@ export function WasteTrackingPage() {
 
       {/* Root Cause Analysis Banner */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-        <div className="p-3.5 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-3.5 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground font-semibold">Chiller / Expired</span>
             <ThermometerCold className="h-4 w-4 text-warning" weight="duotone" />
@@ -204,7 +204,7 @@ export function WasteTrackingPage() {
           <p className="text-2xs text-muted-foreground mt-0.5">Share 36.8% kerugian</p>
         </div>
 
-        <div className="p-3.5 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-3.5 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground font-semibold">Dial-in & Kalibrasi</span>
             <Drop className="h-4 w-4 text-accent1" weight="duotone" />
@@ -213,7 +213,7 @@ export function WasteTrackingPage() {
           <p className="text-2xs text-muted-foreground mt-0.5">Biji kopi terbuang</p>
         </div>
 
-        <div className="p-3.5 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-3.5 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground font-semibold">Kemasan Rusak</span>
             <WarningCircle className="h-4 w-4 text-destructive" weight="duotone" />
@@ -222,7 +222,7 @@ export function WasteTrackingPage() {
           <p className="text-2xs text-muted-foreground mt-0.5">Unboxing handling crew</p>
         </div>
 
-        <div className="p-3.5 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-3.5 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground font-semibold">Kitchen Overheat</span>
             <ShieldCheck className="h-4 w-4 text-accent2" weight="duotone" />

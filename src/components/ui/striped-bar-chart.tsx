@@ -25,6 +25,8 @@ export interface StripedBarChartProps {
   showCategoryBreakdown?: boolean
   items?: StripedBarItem[]
   onBarClick?: (item: StripedBarItem) => void
+  onFilterClick?: () => void
+  onViewDetails?: () => void
 }
 
 const DEFAULT_ITEMS: StripedBarItem[] = [
@@ -89,6 +91,8 @@ export function StripedBarChart({
   showCategoryBreakdown = true,
   items = DEFAULT_ITEMS,
   onBarClick,
+  onFilterClick,
+  onViewDetails,
 }: StripedBarChartProps) {
   // Find highest item index ("yang paling naik")
   const maxItemIdx = items.reduce(
@@ -124,6 +128,7 @@ export function StripedBarChart({
         <div className="flex items-center gap-2">
           <button
             type="button"
+            onClick={onFilterClick}
             className="h-9 w-9 rounded-full bg-secondary hover:bg-border transition-colors flex items-center justify-center text-foreground cursor-pointer"
             title="Filter Activity"
           >
@@ -131,6 +136,7 @@ export function StripedBarChart({
           </button>
           <button
             type="button"
+            onClick={onViewDetails}
             className="h-9 w-9 rounded-full bg-secondary hover:bg-border transition-colors flex items-center justify-center text-foreground cursor-pointer"
             title="View Details"
           >

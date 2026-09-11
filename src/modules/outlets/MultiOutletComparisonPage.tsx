@@ -59,17 +59,17 @@ export function MultiOutletComparisonPage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-4 rounded-xl border border-border bg-card">
+        <div className="p-4 rounded-2xl border border-border bg-card">
           <div className="text-xs font-semibold text-muted-foreground">Outlet Omzet Tertinggi</div>
           <div className="text-lg font-bold text-foreground mt-1">Malang (Rp24.2M)</div>
           <p className="text-xs text-accent2 mt-0.5 font-semibold">50.3% dari total penjualan grup</p>
         </div>
-        <div className="p-4 rounded-xl border border-border bg-card">
+        <div className="p-4 rounded-2xl border border-border bg-card">
           <div className="text-xs font-semibold text-muted-foreground">Pertumbuhan Tercepat</div>
           <div className="text-lg font-bold text-foreground mt-1">Jakarta (+22.5%)</div>
           <p className="text-xs text-accent2 mt-0.5 font-semibold">Adopsi pasar baru sangat positif</p>
         </div>
-        <div className="p-4 rounded-xl border border-border bg-card">
+        <div className="p-4 rounded-2xl border border-border bg-card">
           <div className="text-xs font-semibold text-muted-foreground">Perlu Perhatian Khusus</div>
           <div className="text-lg font-bold text-destructive mt-1">Surabaya (-12.0%)</div>
           <p className="text-xs text-destructive mt-0.5 font-semibold">Tingkat waste tinggi (2.8%)</p>

@@ -108,18 +108,18 @@ export function ActivityTimelinePage() {
                 <div className="flex-1 p-3.5 rounded-lg border border-border bg-surface shadow-2xs hover:border-border/80 transition-colors">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                     <h4 className="text-xs font-bold text-foreground">{act.action}</h4>
-                    <span className="text-[11px] text-muted-foreground flex items-center gap-1 font-mono">
+                    <span className="text-2xs text-muted-foreground flex items-center gap-1 font-mono">
                       <Clock className="h-3 w-3" />
                       {act.dayGroup}, {act.time}
                     </span>
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">{act.detail}</p>
-                  <div className="mt-2.5 pt-2 border-t border-border/50 flex items-center justify-between text-[11px]">
+                  <div className="mt-2.5 pt-2 border-t border-border/50 flex items-center justify-between text-2xs">
                     <span className="text-foreground font-medium flex items-center gap-1">
                       <User className="h-3 w-3 text-muted-foreground" />
                       {act.user}
                     </span>
-                    <Badge variant="secondary" className="text-[10px] py-0 font-mono">
+                    <Badge variant="secondary" className="text-2xs py-0 font-mono">
                       {act.id}
                     </Badge>
                   </div>

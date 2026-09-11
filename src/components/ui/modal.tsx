@@ -57,7 +57,7 @@ export function Modal({
       {/* Modal Dialog */}
       <div
         className={cn(
-          'relative w-full rounded-xl border border-border bg-card p-6 shadow-xl z-50 transition-all text-secondary',
+          'relative w-full rounded-2xl border border-border bg-card p-6 shadow-xl z-50 transition-all text-card-foreground',
           maxWidthClass
         )}
         role="dialog"

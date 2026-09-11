@@ -90,6 +90,7 @@ export function Sidebar({
 
   // Track accordion expand state for modules with subpages
   const [expandedModules, setExpandedModules] = useState<Record<string, boolean>>({
+    dashboard: true,
     sales: true,
     products: false,
     inventory: false,
@@ -128,6 +129,10 @@ export function Sidebar({
       id: 'dashboard',
       label: 'Dashboard',
       icon: House,
+      subPages: [
+        { id: 'overview', label: 'Overview' },
+        { id: 'analytics', label: 'Sales Analytics' },
+      ],
     },
     {
       id: 'sales',
@@ -135,7 +140,6 @@ export function Sidebar({
       icon: Receipt,
       subPages: [
         { id: 'orders', label: 'Orders Queue' },
-        { id: 'analytics', label: 'Sales Analytics' },
       ],
     },
     {

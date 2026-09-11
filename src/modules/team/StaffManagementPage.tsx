@@ -153,7 +153,7 @@ export function StaffManagementPage() {
                     <td className="py-3 px-3 text-muted-foreground">{staff.shift}</td>
                     <td className="py-3 px-3 text-right font-bold text-accent2">{staff.performanceRating}</td>
                     <td className="py-3 px-3 text-center">
-                      <span className="text-[11px] font-semibold text-accent2 bg-accent2/10 px-2 py-0.5 rounded-full">
+                      <span className="text-2xs font-semibold text-accent2 bg-accent2/10 px-2 py-0.5 rounded-full">
                         Bertugas
                       </span>
                     </td>

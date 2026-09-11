@@ -12,14 +12,14 @@ Table.displayName = 'Table'
 
 export const TableHeader = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => (
-    <thead ref={ref} className={cn('[&_tr]:border-b border-border bg-secondary/40', className)} {...props} />
+    <thead ref={ref} className={cn('border-b border-border bg-secondary/40', className)} {...props} />
   )
 )
 TableHeader.displayName = 'TableHeader'
 
 export const TableBody = React.forwardRef<HTMLTableSectionElement, React.HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => (
-    <tbody ref={ref} className={cn('[&_tr:last-child]:border-0', className)} {...props} />
+    <tbody ref={ref} className={cn('divide-y divide-border', className)} {...props} />
   )
 )
 TableBody.displayName = 'TableBody'
@@ -29,7 +29,7 @@ export const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttribut
     <tr
       ref={ref}
       className={cn(
-        'border-b border-border transition-colors hover:bg-secondary/50 data-[state=selected]:bg-secondary',
+        'border-b border-border transition-colors hover:bg-secondary/50 aria-selected:bg-secondary',
         className
       )}
       {...props}
@@ -43,7 +43,7 @@ export const TableHead = React.forwardRef<HTMLTableCellElement, React.ThHTMLAttr
     <th
       ref={ref}
       className={cn(
-        'h-10 px-4 text-left align-middle text-xs font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0',
+        'h-10 px-4 text-left align-middle text-xs font-semibold text-muted-foreground',
         className
       )}
       {...props}
@@ -54,7 +54,7 @@ TableHead.displayName = 'TableHead'
 
 export const TableCell = React.forwardRef<HTMLTableCellElement, React.TdHTMLAttributes<HTMLTableCellElement>>(
   ({ className, ...props }, ref) => (
-    <td ref={ref} className={cn('p-4 align-middle [&:has([role=checkbox])]:pr-0', className)} {...props} />
+    <td ref={ref} className={cn('p-4 align-middle', className)} {...props} />
   )
 )
 TableCell.displayName = 'TableCell'

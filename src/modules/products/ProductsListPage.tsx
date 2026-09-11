@@ -208,7 +208,7 @@ export function ProductsListPage() {
 
       {/* Performance Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-4 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Top Sellers</span>
             <Sparkle className="h-4 w-4 text-accent1" weight="duotone" />
@@ -217,7 +217,7 @@ export function ProductsListPage() {
           <p className="text-2xs text-accent1 font-semibold mt-0.5">Spanish Latte & Matcha Uji (Kontribusi 54% Omzet)</p>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-4 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Rising Products</span>
             <TrendUp className="h-4 w-4 text-accent2" weight="bold" />
@@ -226,7 +226,7 @@ export function ProductsListPage() {
           <p className="text-2xs text-accent2 font-semibold mt-0.5">Butter Croissant (+22% pesanan minggu ini)</p>
         </div>
 
-        <div className="p-4 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-4 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Low Performers</span>
             <WarningCircle className="h-4 w-4 text-destructive" weight="duotone" />

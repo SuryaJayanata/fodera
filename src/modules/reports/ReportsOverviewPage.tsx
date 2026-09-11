@@ -81,7 +81,7 @@ export function ReportsOverviewPage() {
                 <div className="p-2.5 rounded-lg bg-secondary/50 border border-border/60 text-xs font-mono text-foreground font-medium">
                   {r.metrics}
                 </div>
-                <div className="flex items-center justify-between pt-2 border-t border-border/60 text-[11px] text-muted-foreground">
+                <div className="flex items-center justify-between pt-2 border-t border-border/60 text-2xs text-muted-foreground">
                   <span>{r.updated}</span>
                   <div className="flex items-center gap-1.5">
                     <Button

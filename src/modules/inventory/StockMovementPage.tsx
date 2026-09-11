@@ -226,7 +226,7 @@ export function StockMovementPage() {
 
       {/* Movement Summary Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="p-3.5 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-3.5 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground font-medium">Pembelian Masuk</span>
             <ArrowDownLeft className="h-4 w-4 text-accent2" weight="bold" />
@@ -235,7 +235,7 @@ export function StockMovementPage() {
           <div className="text-2xs text-accent2 font-semibold mt-0.5">Faktur supplier terverifikasi</div>
         </div>
 
-        <div className="p-3.5 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-3.5 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground font-medium">Penggunaan Bar</span>
             <ArrowUpRight className="h-4 w-4 text-foreground" weight="bold" />
@@ -244,7 +244,7 @@ export function StockMovementPage() {
           <div className="text-2xs text-muted-foreground mt-0.5">Tercatat dari 284 cup espresso</div>
         </div>
 
-        <div className="p-3.5 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-3.5 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground font-medium">Waste Tercatat</span>
             <Trash className="h-4 w-4 text-destructive" weight="duotone" />
@@ -253,7 +253,7 @@ export function StockMovementPage() {
           <div className="text-2xs text-destructive font-semibold mt-0.5">Suhu chiller drop</div>
         </div>
 
-        <div className="p-3.5 rounded-xl border border-border bg-card shadow-2xs">
+        <div className="p-3.5 rounded-2xl border border-border bg-card shadow-2xs">
           <div className="flex items-center justify-between">
             <span className="text-xs text-muted-foreground font-medium">Selisih Opname</span>
             <ArrowsClockwise className="h-4 w-4 text-warning" weight="bold" />

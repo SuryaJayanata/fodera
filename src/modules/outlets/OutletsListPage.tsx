@@ -93,12 +93,12 @@ export function OutletsListPage() {
               <div className="flex items-start justify-between">
                 <div>
                   <CardTitle className="text-sm font-bold text-foreground">{o.name}</CardTitle>
-                  <CardDescription className="flex items-center gap-1 mt-1 text-[11px]">
+                  <CardDescription className="flex items-center gap-1 mt-1 text-2xs">
                     <MapPin className="h-3 w-3 shrink-0" />
                     <span>{o.location}</span>
                   </CardDescription>
                 </div>
-                <Badge variant={o.trend === 'up' ? 'accent2' : 'destructive'} className="shrink-0 gap-0.5 text-[10px]">
+                <Badge variant={o.trend === 'up' ? 'accent2' : 'destructive'} className="shrink-0 gap-0.5 text-2xs">
                   {o.trend === 'up' ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
                   <span>{o.growth}</span>
                 </Badge>
@@ -124,7 +124,7 @@ export function OutletsListPage() {
                 </span>
               </div>
 
-              <div className="pt-3 border-t border-border/60 flex items-center justify-between text-[11px] text-muted-foreground">
+              <div className="pt-3 border-t border-border/60 flex items-center justify-between text-2xs text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <Clock className="h-3 w-3" />
                   {o.hours}

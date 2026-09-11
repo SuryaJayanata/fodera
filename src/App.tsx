@@ -5,11 +5,8 @@ import {
   Route,
   Navigate,
   useNavigate,
-  useLocation,
-  Link,
 } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 // Modules
 import { LandingPage } from '@/modules/landing/LandingPage'
@@ -35,13 +32,12 @@ import { MultiOutletComparisonPage } from '@/modules/outlets/MultiOutletComparis
 import { ReportsOverviewPage } from '@/modules/reports/ReportsOverviewPage'
 import { ActivityTimelinePage } from '@/modules/activity/ActivityTimelinePage'
 import { SettingsPage } from '@/modules/settings/SettingsPage'
-import { House } from '@phosphor-icons/react'
 
 // SaaS Platform Shell with Modular Inner Navigation
 function SaasApp() {
   const navigate = useNavigate()
   const [activeModule, setActiveModule] = useState<string>('dashboard')
-  const [activeSubPage, setActiveSubPage] = useState<string>('default')
+  const [activeSubPage, setActiveSubPage] = useState<string>('overview')
   const [currentOutlet, setCurrentOutlet] = useState<string>('all')
   const [currentPeriod, setCurrentPeriod] = useState<string>('7 Days')
 
@@ -59,11 +55,19 @@ function SaasApp() {
       return
     }
 
+    // Redirect ('sales', 'analytics') call to ('dashboard', 'analytics') to avoid duplication
+    if (moduleId === 'sales' && subPageId === 'analytics') {
+      setActiveModule('dashboard')
+      setActiveSubPage('analytics')
+      return
+    }
+
     setActiveModule(moduleId)
     if (subPageId) {
       setActiveSubPage(subPageId)
     } else {
-      if (moduleId === 'sales') setActiveSubPage('orders')
+      if (moduleId === 'dashboard') setActiveSubPage('overview')
+      else if (moduleId === 'sales') setActiveSubPage('orders')
       else if (moduleId === 'products') setActiveSubPage('all')
       else if (moduleId === 'inventory') setActiveSubPage('stock')
       else if (moduleId === 'team') setActiveSubPage('staff')
@@ -75,9 +79,9 @@ function SaasApp() {
   const getPageTitle = () => {
     switch (activeModule) {
       case 'dashboard':
-        return 'Dashboard Overview'
+        return activeSubPage === 'analytics' ? 'Sales & Revenue Analytics' : 'Dashboard Overview'
       case 'sales':
-        return 'Sales Operations'
+        return 'Order Management & Kitchen Display'
       case 'products':
         return 'Products & Menu'
       case 'inventory':
@@ -100,26 +104,10 @@ function SaasApp() {
   }
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-secondary/50">
-      {/* Quick top bar back to Landing Page */}
-      <div className="bg-primary text-white text-xs px-4 py-1.5 flex items-center justify-between z-50 shrink-0 border-b border-primary/20">
-        <div className="flex items-center gap-2">
-          <span className="font-bold">FODERA Control Center</span>
-          <span className="text-white/70">· Mode Aplikasi Operasional</span>
-        </div>
-        <Link
-          to="/"
-          className="hover:underline flex items-center gap-1 font-semibold text-accent1 hover:text-white"
-        >
-          <House className="h-3 w-3" weight="bold" />
-          <span>Kembali ke Landing Page (/)</span>
-        </Link>
-      </div>
-
-      <div className="flex-1 min-h-0 overflow-hidden">
-        <AppLayout
-          activeModule={activeModule}
-          activeSubPage={activeSubPage}
+    <div className="h-screen w-full overflow-hidden bg-secondary/50">
+      <AppLayout
+        activeModule={activeModule}
+        activeSubPage={activeSubPage}
         onNavigate={handleNavigate}
         currentOutlet={currentOutlet}
         onOutletChange={setCurrentOutlet}
@@ -128,77 +116,33 @@ function SaasApp() {
         pageTitle={getPageTitle()}
         pageSubtitle={currentOutlet === 'all' ? 'Seluruh Cabang' : `Cabang ${currentOutlet}`}
       >
-        {/* Subtab Bar for modules with multiple views */}
-        {activeModule === 'sales' && (
-          <div className="border-b border-border pb-3">
-            <Tabs value={activeSubPage} onValueChange={(val) => setActiveSubPage(val)}>
-              <TabsList>
-                <TabsTrigger value="orders">Orders Queue</TabsTrigger>
-                <TabsTrigger value="analytics">Sales Analytics</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-        )}
-
-        {activeModule === 'products' && (
-          <div className="border-b border-border pb-3">
-            <Tabs value={activeSubPage} onValueChange={(val) => setActiveSubPage(val)}>
-              <TabsList>
-                <TabsTrigger value="all">Semua Produk</TabsTrigger>
-                <TabsTrigger value="categories">Kategori Menu</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-        )}
-
-        {activeModule === 'inventory' && (
-          <div className="border-b border-border pb-3">
-            <Tabs value={activeSubPage} onValueChange={(val) => setActiveSubPage(val)}>
-              <TabsList>
-                <TabsTrigger value="stock">Stock Health & Restock</TabsTrigger>
-                <TabsTrigger value="movement">Stock Movement Ledger</TabsTrigger>
-                <TabsTrigger value="waste">Waste & Loss Tracking</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-        )}
-
-        {activeModule === 'team' && (
-          <div className="border-b border-border pb-3">
-            <Tabs value={activeSubPage} onValueChange={(val) => setActiveSubPage(val)}>
-              <TabsList>
-                <TabsTrigger value="staff">Daftar Staf</TabsTrigger>
-                <TabsTrigger value="shifts">Jadwal Shift</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-        )}
-
-        {activeModule === 'outlets' && (
-          <div className="border-b border-border pb-3">
-            <Tabs value={activeSubPage} onValueChange={(val) => setActiveSubPage(val)}>
-              <TabsList>
-                <TabsTrigger value="list">Daftar Cabang</TabsTrigger>
-                <TabsTrigger value="compare">Perbandingan Multi-Outlet</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
-        )}
-
         {/* Module Content Switcher */}
         {activeModule === 'dashboard' && (
-          <DashboardOverviewPage
-            currentOutlet={currentOutlet}
-            currentPeriod={currentPeriod}
-            onNavigate={handleNavigate}
-          />
+          <>
+            {(activeSubPage === 'overview' || activeSubPage === 'default') && (
+              <DashboardOverviewPage
+                currentOutlet={currentOutlet}
+                currentPeriod={currentPeriod}
+                onNavigate={handleNavigate}
+                onOutletChange={setCurrentOutlet}
+              />
+            )}
+            {activeSubPage === 'analytics' && (
+              <SalesAnalyticsPage
+                currentOutlet={currentOutlet}
+                onOutletChange={setCurrentOutlet}
+                currentPeriod={currentPeriod}
+                onPeriodChange={setCurrentPeriod}
+              />
+            )}
+          </>
         )}
 
         {activeModule === 'sales' && (
-          <>
-            {activeSubPage === 'orders' && <OrdersPage />}
-            {activeSubPage === 'analytics' && <SalesAnalyticsPage />}
-          </>
+          <OrdersPage
+            currentOutlet={currentOutlet}
+            onOutletChange={setCurrentOutlet}
+          />
         )}
 
         {activeModule === 'products' && (
@@ -236,7 +180,6 @@ function SaasApp() {
         {activeModule === 'activity' && <ActivityTimelinePage />}
         {activeModule === 'settings' && <SettingsPage />}
       </AppLayout>
-      </div>
     </div>
   )
 }

@@ -40,7 +40,7 @@ export function AppLayout({
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
 
   return (
-    <div className="flex h-full w-full bg-secondary/50 text-foreground font-sans overflow-hidden p-2 sm:p-3 lg:p-4 gap-3 lg:gap-4">
+    <div className="flex h-full w-full bg-secondary/50 text-foreground font-sans overflow-hidden p-2 sm:p-2.5 lg:py-3 lg:pl-3 lg:pr-1.5 gap-2.5 lg:gap-3">
       {/* Sidebar Navigation (Transparent background, floating on outer canvas) */}
       <Sidebar
         activeModule={activeModule}
@@ -72,9 +72,11 @@ export function AppLayout({
           onOpenRestockModal={() => setIsRestockOpen(true)}
           onOpenWasteModal={() => setIsWasteOpen(true)}
           onToggleMobileMenu={() => setIsMobileOpen(!isMobileOpen)}
+          onLogout={() => onNavigate('auth', 'login')}
+          onNavigate={onNavigate}
         />
 
-        <ScrollArea as="main" className="flex-1 p-4 sm:p-6 space-y-6">
+        <ScrollArea as="main" className="flex-1 p-4 sm:p-5 lg:p-6 lg:pr-5 space-y-6">
           {children}
         </ScrollArea>
       </div>
