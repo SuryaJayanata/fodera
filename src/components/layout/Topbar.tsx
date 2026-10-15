@@ -7,8 +7,7 @@ import {
   List,
   Power,
 } from '@phosphor-icons/react'
-import { Modal } from '@/components/ui/modal'
-import { Button } from '@/components/ui/button'
+import { Modal, Button } from '@/components/custom'
 import { cn } from '@/lib/utils'
 
 /* Var-UI Base · pre-emit score: [P:5 H:5 E:5 S:5 R:5 V:5]

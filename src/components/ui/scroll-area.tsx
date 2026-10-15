@@ -1,53 +1,46 @@
-import React, { forwardRef } from 'react'
-import { cn } from '@/lib/utils'
+import * as React from "react"
+import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
 
-/* Var-UI Base · pre-emit score: [P:5 H:5 E:5 S:5 R:5 V:5]
- * scope: component | component: ScrollArea / CustomScrollbar
- * theme: Clean Slate SaaS + Warm Coral | typography: Plus Jakarta Sans
- * status: PASSED (15/15 slop checks verified)
- */
+import { cn } from "@/lib/utils"
 
-export interface ScrollAreaProps extends React.HTMLAttributes<HTMLDivElement> {
-  orientation?: 'vertical' | 'horizontal' | 'both'
-  as?: 'div' | 'main' | 'section' | 'nav' | 'aside'
-}
+const ScrollArea = React.forwardRef<
+  React.ElementRef<typeof ScrollAreaPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
+>(({ className, children, ...props }, ref) => (
+  <ScrollAreaPrimitive.Root
+    ref={ref}
+    className={cn("relative overflow-hidden", className)}
+    {...props}
+  >
+    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+      {children}
+    </ScrollAreaPrimitive.Viewport>
+    <ScrollBar />
+    <ScrollAreaPrimitive.Corner />
+  </ScrollAreaPrimitive.Root>
+))
+ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
 
-/**
- * Reusable Custom Scrollbar Component
- * Provides a sleek, 5px thin scrollbar with accent1/5 background tint and no stepper arrows.
- */
-export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(
-  (
-    {
-      className,
-      children,
-      orientation = 'vertical',
-      as = 'div',
-      ...props
-    },
-    ref
-  ) => {
-    const Component = as
+const ScrollBar = React.forwardRef<
+  React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
+>(({ className, orientation = "vertical", ...props }, ref) => (
+  <ScrollAreaPrimitive.ScrollAreaScrollbar
+    ref={ref}
+    orientation={orientation}
+    className={cn(
+      "flex touch-none select-none transition-colors",
+      orientation === "vertical" &&
+        "h-full w-2.5 border-l border-l-transparent p-[1px]",
+      orientation === "horizontal" &&
+        "h-2.5 flex-col border-t border-t-transparent p-[1px]",
+      className
+    )}
+    {...props}
+  >
+    <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-border" />
+  </ScrollAreaPrimitive.ScrollAreaScrollbar>
+))
+ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName
 
-    return (
-      <Component
-        ref={ref}
-        className={cn(
-          'relative custom-scrollbar',
-          orientation === 'vertical' && 'overflow-y-auto overflow-x-hidden',
-          orientation === 'horizontal' && 'overflow-x-auto overflow-y-hidden',
-          orientation === 'both' && 'overflow-auto',
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </Component>
-    )
-  }
-)
-
-ScrollArea.displayName = 'ScrollArea'
-
-// Export alias CustomScrollbar
-export const CustomScrollbar = ScrollArea
+export { ScrollArea, ScrollBar }

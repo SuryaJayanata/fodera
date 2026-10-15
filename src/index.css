@@ -36,6 +36,38 @@
   --color-ribbon2: #f97316;
   --color-ribbon3: #e11d48;
   --color-ribbon4: #8b5cf6;
+
+  /* Brand & Provider Identity */
+  --color-brand-blue: #4285F4;
+  --color-brand-green: #34A853;
+  --color-brand-yellow: #FBBC05;
+  --color-brand-red: #EA4335;
+
+  /* Split Auth Canvas & Visuals */
+  --color-auth-bg: #0b0a1d;
+  --color-auth-shadow: #090514;
+  --color-auth-stop1: #1e1b4b;
+  --color-auth-stop2: #312e81;
+  --color-auth-stop3: #3730a3;
+  --color-auth-stop4: #4338ca;
+  --color-auth-stop5: #6366f1;
+  --color-auth-stop6: #818cf8;
+  --color-auth-stop7: #7c3aed;
+  --color-auth-stop8: #ec4899;
+  --color-auth-stop9: #db2777;
+}
+
+@utility text-4xs {
+  font-size: 0.5625rem;
+  line-height: 0.75rem;
+}
+
+@utility h-preview-screen {
+  height: 47.5rem;
+}
+
+@utility w-ribbon {
+  width: 31.25rem;
 }
 
 @utility text-foreground {
@@ -49,6 +81,11 @@
 @utility text-2xs {
   font-size: 0.6875rem;
   line-height: 1rem;
+}
+
+@utility text-3xs {
+  font-size: 0.625rem;
+  line-height: 0.8125rem;
 }
 
 @utility bg-diagonal-stripes {
@@ -77,6 +114,12 @@ html {
 
 body, button, input, select, textarea, table, * {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+@layer base {
+  *, ::after, ::before {
+    border-color: var(--color-border, #e2e8f0);
+  }
 }
 
 body {

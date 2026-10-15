@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Sidebar } from './Sidebar'
 import { Topbar } from './Topbar'
-import { Modal } from '@/components/ui/modal'
-import { Button } from '@/components/ui/button'
+import { Modal } from '@/components/custom/modal'
+import { Button } from '@/components/custom/button'
 import { Input } from '@/components/ui/input'
-import { Select } from '@/components/ui/select'
+import { Select } from '@/components/custom/select'
 import { Textarea } from '@/components/ui/textarea'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { ScrollArea } from '@/components/custom/scroll-area'
 
 interface AppLayoutProps {
   activeModule: string
@@ -59,7 +59,7 @@ export function AppLayout({
       />
 
       {/* Main Content Area: Floating Rounded White Container as in Reference Image */}
-      <div className="flex-1 flex flex-col min-w-0 bg-card rounded-2xl md:rounded-3xl border border-border/80 shadow-xs overflow-hidden h-full">
+ <div className="flex-1 flex flex-col min-w-0 bg-card rounded-2xl md:rounded-3xl border border-border/80 overflow-hidden h-full">
         <Topbar
           pageTitle={pageTitle}
           pageSubtitle={pageSubtitle}

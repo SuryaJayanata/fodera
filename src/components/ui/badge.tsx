@@ -1,29 +1,36 @@
-import * as React from 'react'
-import { cn } from '@/lib/utils'
+import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'secondary' | 'outline' | 'accent1' | 'accent2' | 'destructive' | 'warning'
-}
+import { cn } from "@/lib/utils"
 
-export function Badge({ className, variant = 'default', ...props }: BadgeProps) {
-  const variants: Record<NonNullable<BadgeProps['variant']>, string> = {
-    default: 'bg-primary text-white',
-    secondary: 'bg-secondary text-foreground border border-border/80',
-    outline: 'border border-border text-foreground',
-    accent1: 'bg-accent1/10 text-accent1 border border-accent1/20 font-semibold',
-    accent2: 'bg-accent2/10 text-accent2 border border-accent2/20 font-semibold',
-    destructive: 'bg-destructive/10 text-destructive border border-destructive/20 font-semibold',
-    warning: 'bg-warning/10 text-warning border border-warning/20 font-semibold',
+const badgeVariants = cva(
+  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  {
+    variants: {
+      variant: {
+        default:
+ "border-transparent bg-primary text-white hover:bg-primary/80",
+        secondary:
+          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        destructive:
+ "border-transparent bg-destructive text-white hover:bg-destructive/80",
+        outline: "text-foreground",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+    },
   }
+)
 
+export interface BadgeProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof badgeVariants> {}
+
+function Badge({ className, variant, ...props }: BadgeProps) {
   return (
-    <div
-      className={cn(
-        'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors select-none',
-        variants[variant],
-        className
-      )}
-      {...props}
-    />
+    <div className={cn(badgeVariants({ variant }), className)} {...props} />
   )
 }
+
+export { Badge, badgeVariants }

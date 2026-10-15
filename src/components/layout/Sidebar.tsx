@@ -254,10 +254,10 @@ export function Sidebar({
                   onClick={() => handleParentClick(item)}
                   title={item.label}
                   className={cn(
-                    'h-10 w-10 mx-auto flex items-center justify-center rounded-xl transition-colors cursor-pointer border relative',
+                    'h-10 w-10 mx-auto flex items-center justify-center rounded-xl transition-colors cursor-pointer relative outline-none',
                     active
-                      ? 'bg-card text-foreground font-semibold border-border shadow-none'
-                      : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-card/60'
+ ? 'bg-card text-foreground font-semibold border border-border '
+                      : 'text-muted-foreground hover:text-foreground hover:bg-card/60'
                   )}
                 >
                   <IconComp
@@ -299,10 +299,10 @@ export function Sidebar({
                   type="button"
                   onClick={() => handleParentClick(item)}
                   className={cn(
-                    'w-full flex items-center justify-between h-10 px-3.5 rounded-xl text-xs transition-colors cursor-pointer border',
+                    'w-full flex items-center justify-between h-10 px-3.5 rounded-xl text-xs transition-colors cursor-pointer outline-none',
                     active
-                      ? 'bg-card text-foreground font-semibold border-border shadow-none'
-                      : 'border-transparent text-muted-foreground hover:text-foreground hover:bg-card/60 font-medium'
+ ? 'bg-card text-foreground font-semibold border border-border '
+                      : 'text-muted-foreground hover:text-foreground hover:bg-card/60 font-medium'
                   )}
                 >
                   <div className="flex items-center gap-3 min-w-0">
@@ -325,13 +325,20 @@ export function Sidebar({
                       </span>
                     )}
                     {hasSubPages && (
-                      <button
-                        type="button"
+                      <span
+                        role="button"
+                        tabIndex={0}
                         onClick={(e) => {
                           e.stopPropagation()
                           toggleModuleExpand(item.id)
                         }}
-                        className="p-1 rounded-md text-muted-foreground hover:text-foreground transition-colors"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.stopPropagation()
+                            toggleModuleExpand(item.id)
+                          }
+                        }}
+                        className="p-1 rounded-md text-muted-foreground hover:text-foreground transition-colors cursor-pointer inline-flex items-center justify-center"
                         title={isSubOpen ? 'Tutup sub-menu' : 'Buka sub-menu'}
                       >
                         {isSubOpen ? (
@@ -339,7 +346,7 @@ export function Sidebar({
                         ) : (
                           <CaretRight className="h-3 w-3" />
                         )}
-                      </button>
+                      </span>
                     )}
                   </div>
                 </button>
@@ -359,9 +366,9 @@ export function Sidebar({
                             onCloseMobile?.()
                           }}
                           className={cn(
-                            'w-full flex items-center justify-between h-8 px-2.5 rounded-lg text-xs transition-colors cursor-pointer text-left border border-transparent shadow-none',
+                            'w-full flex items-center justify-between h-8 px-2.5 rounded-lg text-xs transition-colors cursor-pointer text-left outline-none',
                             isSubActive
-                              ? 'bg-accent1/5 text-accent1 font-semibold'
+                              ? 'bg-accent1/10 text-accent1 font-semibold'
                               : 'text-muted-foreground hover:text-foreground hover:bg-card/50 font-medium'
                           )}
                         >
@@ -392,7 +399,7 @@ export function Sidebar({
                 if (onToggleCollapse) onToggleCollapse()
                 setIsOutletExpanded(true)
               }}
-              className="h-10 w-10 mx-auto rounded-xl bg-accent1 flex items-center justify-center shrink-0 shadow-xs text-white p-2.5 cursor-pointer hover:opacity-95 transition-opacity"
+ className="h-10 w-10 mx-auto rounded-xl bg-accent1 flex items-center justify-center shrink-0 text-white p-2.5 cursor-pointer hover:opacity-95 transition-opacity"
               title={`Outlet Aktif: ${activeOutletObj.name}`}
             >
               <div className="grid grid-cols-3 gap-0.5 w-full h-full">
@@ -412,15 +419,15 @@ export function Sidebar({
               type="button"
               onClick={() => setIsOutletExpanded((prev) => !prev)}
               className={cn(
-                'w-full flex items-center justify-between p-2 rounded-xl transition-colors cursor-pointer group text-left border',
+                'w-full flex items-center justify-between p-2 rounded-xl transition-colors cursor-pointer group text-left outline-none',
                 isOutletExpanded
-                  ? 'bg-card text-foreground border-border shadow-none'
-                  : 'border-transparent hover:bg-card/70 text-foreground'
+ ? 'bg-card text-foreground border border-border '
+                  : 'hover:bg-card/70 text-foreground'
               )}
             >
               <div className="flex items-center gap-2.5 min-w-0">
                 {/* Orange Checkerboard Grid Icon */}
-                <div className="h-9 w-9 rounded-xl bg-accent1 flex items-center justify-center shrink-0 shadow-xs text-white p-2">
+ <div className="h-9 w-9 rounded-xl bg-accent1 flex items-center justify-center shrink-0 text-white p-2">
                   <div className="grid grid-cols-3 gap-0.5 w-full h-full">
                     <div className="bg-white rounded-xs opacity-90" />
                     <div className="bg-white/40 rounded-xs" />
@@ -466,9 +473,9 @@ export function Sidebar({
                       onCloseMobile?.()
                     }}
                     className={cn(
-                      'w-full flex items-center justify-between h-8 px-2.5 rounded-lg text-xs transition-colors cursor-pointer text-left border border-transparent shadow-none',
+                      'w-full flex items-center justify-between h-8 px-2.5 rounded-lg text-xs transition-colors cursor-pointer text-left outline-none',
                       isSelected
-                        ? 'bg-accent1/5 text-accent1 font-semibold'
+                        ? 'bg-accent1/10 text-accent1 font-semibold'
                         : 'text-muted-foreground hover:text-foreground hover:bg-card/50 font-medium'
                     )}
                   >
@@ -491,12 +498,12 @@ export function Sidebar({
               if (onToggleCollapse) onToggleCollapse()
             }}
             title="Cari Menu & Modul"
-            className="h-10 w-10 mx-auto rounded-xl border border-border/80 bg-card/70 hover:bg-card text-muted-foreground hover:text-foreground flex items-center justify-center shadow-none transition-colors cursor-pointer"
+ className="h-10 w-10 mx-auto rounded-xl border border-border/80 bg-card/70 hover:bg-card text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors cursor-pointer outline-none"
           >
             <MagnifyingGlass className="h-4 w-4 shrink-0" />
           </button>
         ) : (
-          <div className="w-full h-10 px-3 rounded-xl border border-border/80 bg-card/70 focus-within:bg-card focus-within:border-accent1 text-xs flex items-center gap-2.5 transition-colors">
+          <div className="w-full h-10 px-3 rounded-xl border border-border/80 bg-card/70 focus-within:bg-card focus-within:border-accent1/70 focus-within:ring-1 focus-within:ring-accent1/30 text-xs flex items-center gap-2.5 transition-colors">
             <MagnifyingGlass className="h-4 w-4 text-muted-foreground shrink-0" />
             <input
               type="text"
@@ -509,7 +516,7 @@ export function Sidebar({
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="p-0.5 rounded-md text-muted-foreground hover:text-foreground transition-colors cursor-pointer shrink-0"
+                className="p-0.5 rounded-md text-muted-foreground hover:text-foreground transition-colors cursor-pointer shrink-0 outline-none"
                 title="Hapus pencarian"
               >
                 <X className="h-3.5 w-3.5" />
@@ -528,7 +535,7 @@ export function Sidebar({
             type="button"
             onClick={() => onNavigate('dashboard')}
             title="Operational Alerts (4 hal butuh perhatian)"
-            className="h-10 w-10 mx-auto rounded-xl border border-transparent hover:bg-card/60 text-muted-foreground hover:text-foreground flex items-center justify-center relative transition-colors cursor-pointer"
+            className="h-10 w-10 mx-auto rounded-xl hover:bg-card/60 text-muted-foreground hover:text-foreground flex items-center justify-center relative transition-colors cursor-pointer outline-none"
           >
             <Tray className="h-4 w-4 shrink-0" />
             <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-accent1 ring-2 ring-background" />
@@ -537,7 +544,7 @@ export function Sidebar({
           <button
             type="button"
             onClick={() => onNavigate('dashboard')}
-            className="w-full h-10 px-3.5 rounded-xl border border-transparent text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-card/60 flex items-center justify-between transition-colors cursor-pointer"
+            className="w-full h-10 px-3.5 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-card/60 flex items-center justify-between transition-colors cursor-pointer outline-none"
           >
             <div className="flex items-center gap-2.5">
               <Tray className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -581,7 +588,7 @@ export function Sidebar({
         {collapsed ? (
           <div className="flex flex-col items-center gap-2">
             <div
-              className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center font-extrabold text-xs shrink-0 shadow-2xs cursor-pointer"
+ className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center font-extrabold text-xs shrink-0 cursor-pointer"
               title="Murad JM (muradjm3@gmail.com)"
             >
               M
@@ -589,7 +596,7 @@ export function Sidebar({
             <button
               type="button"
               onClick={handleToggleCollapse}
-              className="p-1.5 rounded-lg bg-transparent text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center justify-center"
+              className="p-1.5 rounded-lg bg-transparent text-muted-foreground hover:text-foreground transition-colors cursor-pointer flex items-center justify-center outline-none"
               title="Buka sidebar"
               aria-label="Expand sidebar"
             >
@@ -599,7 +606,7 @@ export function Sidebar({
         ) : (
           <div className="flex items-center justify-between p-2 rounded-xl hover:bg-card/70 transition-colors">
             <div className="flex items-center gap-2.5 overflow-hidden">
-              <div className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center font-extrabold text-xs shrink-0 shadow-2xs">
+ <div className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center font-extrabold text-xs shrink-0 ">
                 M
               </div>
               <div className="overflow-hidden text-left">
@@ -610,7 +617,7 @@ export function Sidebar({
             <button
               type="button"
               onClick={handleToggleCollapse}
-              className="p-1.5 rounded-lg bg-transparent text-muted-foreground hover:text-foreground transition-colors cursor-pointer shrink-0 ml-1 flex items-center justify-center"
+              className="p-1.5 rounded-lg bg-transparent text-muted-foreground hover:text-foreground transition-colors cursor-pointer shrink-0 ml-1 flex items-center justify-center outline-none"
               title="Tutup sidebar"
               aria-label="Collapse sidebar"
             >
@@ -641,7 +648,7 @@ export function Sidebar({
             className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
             onClick={onCloseMobile}
           />
-          <div className="relative flex flex-col w-72 max-w-full bg-secondary p-4 shadow-xl z-10 h-full overflow-y-auto">
+ <div className="relative flex flex-col w-72 max-w-full bg-secondary p-4 z-10 h-full overflow-y-auto">
             <div className="flex items-center justify-end pb-2">
               <button
                 type="button"
